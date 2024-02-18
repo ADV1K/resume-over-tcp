@@ -78,12 +78,14 @@ func handleConnection(conn net.Conn)  {
 func main() {
     fmt.Print(Message)
 
-    if len(os.Args) < 2 {
-        fmt.Fprintf(os.Stderr, "Usage: %s <port>\n", os.Args[0])
-        os.Exit(1)
+    var port string
+    if len(os.Args) > 1 {
+        port = fmt.Sprintf(":%s", os.Args[1])
+    } else {
+        port = ":6969"
     }
 
-	port := fmt.Sprintf(":%s", os.Args[1])
+    // Create a TCP socket and listen on the given port
     listener, err := net.Listen("tcp", port)
     if err != nil {
         log.Fatal(err)
@@ -91,6 +93,7 @@ func main() {
     defer listener.Close()
     log.Printf("Listening on %s", port)
 
+    // Accept incoming connections, and handle them in a new goroutine
     for {
         conn, err := listener.Accept()
         if err != nil {
