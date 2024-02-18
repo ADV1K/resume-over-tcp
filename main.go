@@ -51,7 +51,8 @@ var Lines = []string{
     Contact,
 }
 
-var Message = strings.Join(Lines, "\n")
+// use \r\n for windows compatibility, mainly PuTTY
+var Message = strings.ReplaceAll(strings.Join(Lines, "\r\n"), "\n", "\r\n")
 
 
 func handleConnection(conn net.Conn)  {
